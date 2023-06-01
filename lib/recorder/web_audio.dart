@@ -52,6 +52,8 @@ class WebAudio {
       });
       _recorder?.stop();
       _recorder = null;
+      _stream?.getTracks().forEach((track) => track.stop());
+      _stream = null;
     }
 
     return completer.future;
@@ -64,9 +66,5 @@ class WebAudio {
   String retrieveAudioBlobUrl() {
     final blob = html.Blob(_dataChunks, 'audio/webm');
     return html.Url.createObjectUrl(blob);
-  }
-
-  html.MediaStream retrieveAudioStream() {
-    return _stream!;
   }
 }
