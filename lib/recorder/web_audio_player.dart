@@ -1,16 +1,14 @@
 import 'dart:html' as html;
 import 'dart:ui' as ui;
 
-import 'package:audio_pwa/recorder/web_audio_player_controller.dart';
 import 'package:flutter/material.dart';
 
 class WebAudioPlayer extends StatelessWidget {
   final viewId = 'web_audio_player';
-  final WebAudioPlayerController? controller;
 
   html.AudioElement? _element;
 
-  WebAudioPlayer({Key? key, this.controller}) : super(key: key);
+  WebAudioPlayer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +18,8 @@ class WebAudioPlayer extends StatelessWidget {
     ui.platformViewRegistry.registerViewFactory(viewId, (int viewId) => _element!);
 
     return SizedBox(
-      width: 100,
-      height: 100,
+      width: 0,
+      height: 0,
       child: HtmlElementView(viewType: viewId),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:audio_pwa/player.dart';
 import 'package:audio_pwa/recorder/web_audio.dart';
 import 'package:audio_pwa/recorder/web_audio_player.dart';
 import 'package:flutter/material.dart';
@@ -11,10 +12,10 @@ class AudioRecorderCustom extends StatefulWidget {
 
 class _AudioRecorderCustomState extends State<AudioRecorderCustom> {
   final _webAudio = WebAudio();
-  final _webAudioPlayerKey = GlobalKey();
+  //final _webAudioPlayerKey = GlobalKey();
 
   bool _recording = false;
-  int _duration = 0;
+  String? _audioUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +27,6 @@ class _AudioRecorderCustomState extends State<AudioRecorderCustom> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text('Duration: $_duration s'),
-                const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
                     _recording ? stopRecording(context) : startRecording(context);
@@ -35,7 +34,8 @@ class _AudioRecorderCustomState extends State<AudioRecorderCustom> {
                   child: Text(_recording ? 'Recording...' : 'Record'),
                 ),
                 const SizedBox(height: 20),
-                WebAudioPlayer(key: _webAudioPlayerKey),
+                //WebAudioPlayer(key: _webAudioPlayerKey),
+                _audioUrl != null ? Player(url: _audioUrl!) : const SizedBox(),
               ],
             ),
           ),
@@ -59,8 +59,11 @@ class _AudioRecorderCustomState extends State<AudioRecorderCustom> {
       print('data: $data');
       final blobUrl = _webAudio.retrieveAudioBlobUrl();
       print('blobUrl: $blobUrl');
-      (_webAudioPlayerKey.currentWidget as WebAudioPlayer?)?.play(blobUrl);
-      setState(() => _recording = false);
+      //(_webAudioPlayerKey.currentWidget as WebAudioPlayer?)?.play(blobUrl);
+      setState(() {
+        _recording = false;
+        _audioUrl = blobUrl;
+      });
     } catch (e) {
       print(e);
     }
